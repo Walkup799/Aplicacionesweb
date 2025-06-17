@@ -1,12 +1,15 @@
-import jwt from 'jsonwebtoken'
-const ACCESS_SECRET='secret12345utd';
+import jwt from 'jsonwebtoken';
 
-export const generateAccessToken=(userId:string)=>{
+// contraseña de acceso
+const ACCESS_SECRET = 'secret12345utd';
+
+// Función para generar el token
+export const generateAccessToken = (userId: string) => {
     return jwt.sign(
         { userId },
         ACCESS_SECRET,
         {
-              expiresIn: '15m'
+            expiresIn: '15m'  // Tiempo de expiración correcto
         }
-    )
-}
+    );
+};

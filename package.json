@@ -1,5 +1,5 @@
 {
-  "name": "aplicaciones_web",
+  "name": "proyecto",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,17 +12,21 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.9",
     "@types/jsonwebtoken": "^9.0.9",
+    "antd": "^5.26.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mongoose": "^8.15.1",
     "morgan": "^1.10.0",
-    "node-cache": "^5.1.2"
+    "node-cache": "^5.1.2",
+    "tailwindcss": "^4.1.9"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.2",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^22.15.19",
     "bcryptjs": "^3.0.2",
     "install": "^0.13.0",

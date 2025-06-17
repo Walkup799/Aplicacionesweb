@@ -65,7 +65,7 @@ export const getTime = (req: Request, res: Response) => {
     return res.json({
         timeToLifeSeconds,
         expTime,
-        message: "El token expira en ${timeToLifeSeconds} segundos"
+        message: `El token expira en ${timeToLifeSeconds} segundos`
     });
 };
 
@@ -94,11 +94,10 @@ export const updateTime = (req: Request, res: Response) => {
     });
 };
 
-export const getAllUsers=async (req: Request, res: Response) =>{
- const userList= await User.find();
-
- return res.json({ userList });
-}
+export const getAllUsers = async (req: Request, res: Response) => {
+    const userList = await User.find();
+    return res.json({ userList });
+};
 
 export const getByUsername = async (req: Request, res: Response) => {
     const { username } = req.params;
@@ -117,9 +116,9 @@ export const getByUsername = async (req: Request, res: Response) => {
     }
 };
 
-export const createUser= async (req: Request, res: Response) => {
-    try{
-        const {username, password,email,role} = req.body;
+export const createUser = async (req: Request, res: Response) => {
+    try {
+        const { username, password, email, role } = req.body;
 
         const newUser = new User({
             username,
@@ -129,11 +128,51 @@ export const createUser= async (req: Request, res: Response) => {
             status: true
         });
 
-        const user=await newUser.save();
-        return res.json({ user })
+        const user = await newUser.save();
+        return res.json({ user });
 
-    }catch(error){
+    } catch (error) {
         console.log("Error ocurrido en createUser: ", error);
-        return res.status(426).json({ error })
+        return res.status(426).json({ error });
     }
-}
+};
+
+// Nuevo: actualizar usuario incluyendo cambiar status
+export const updateUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { username, email, password, role, status } = req.body;
+
+    try {
+        const user = await User.findById(id);
+        if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+        if (username) user.username = username;
+        if (email) user.email = email;
+        if (role) user.role = role;
+        if (typeof status === 'boolean') user.status = status;
+        if (password) user.password = password;
+
+        await user.save();
+        return res.json({ message: "Usuario actualizado", user });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Error al actualizar usuario" });
+    }
+};
+
+// Nuevo: eliminar usuario (cambiar status a false)
+export const deleteUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById(id);
+        if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+        user.status = false;
+        await user.save();
+        return res.json({ message: "Usuario desactivado correctamente" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Error al desactivar usuario" });
+    }
+};
